@@ -19,7 +19,6 @@ export class BookResolver {
   async createBook(@Arg('data') data: CreateBookInput) {
     const book = Book.create(data);
     book.author = await Author.findOne({ where: {authorId: data.authorId}}) as Author;
-    console.log("BookResolver -> createBook -> book", book)
     if (!book) throw new Error(`Author with id ${data.authorId} not found!`);
     await book.save();
     return book;
@@ -29,6 +28,10 @@ export class BookResolver {
   async updateBook(@Arg('id') bookId: number, @Arg('data') data: UpdateBookInput) {
     const book = await Book.findOne({ where: { bookId } });
     if (!book) throw new Error('Book not found!');
+    if ('authorId' in data) {
+      book.author = await Author.findOne({ where: {authorId: data.authorId}}) as Author;
+      if (!book.author) throw new Error(`Author with id ${data.authorId} not found!`);
+    }
     Object.assign(book, data);
     await book.save();
     return book;

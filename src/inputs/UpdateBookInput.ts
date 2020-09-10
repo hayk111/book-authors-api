@@ -3,10 +3,10 @@ import { InputType, Field } from 'type-graphql';
 @InputType()
 export class UpdateBookInput {
   @Field({ nullable: true })
-  title?: string;
+  name?: string;
 
   @Field({ nullable: true })
-  author?: string;
+  authorId: number;
 
   @Field({ nullable: true })
   isPublished?: boolean;

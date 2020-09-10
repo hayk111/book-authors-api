@@ -3,7 +3,7 @@ import { InputType, Field } from "type-graphql";
 @InputType()
 export class CreateBookInput {
   @Field()
-  title: string;
+  name: string;
 
   @Field(() => Number)
   authorId: number;

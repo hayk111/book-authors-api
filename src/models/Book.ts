@@ -11,10 +11,10 @@ export class Book extends BaseEntity {
 
   @Field(() => String)
   @Column()
-  title: string;
+  name: string;
 
   @Field(() => Author)
-  @ManyToOne(type => Author, author => author.books)
+  @ManyToOne(type => Author, author => author.books, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'authorId'})
   author: Author;
 

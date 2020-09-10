@@ -1,17 +1,17 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
-import { Book, Author } from '../models';
-import { CreateAuthorInput, UpdateBookInput } from '../inputs';
+import { Author } from '../models';
+import { CreateAuthorInput, UpdateAuthorInput } from '../inputs';
 
 @Resolver()
 export class AuthorResolver {
   @Query(() => [Author])
   authors() {
-    return Author.find();
+    return Author.find({relations: ['books']});
   }
 
   @Query(() => Author)
   getAuthor(@Arg('id') authorId: number) {
-    return Author.findOne({ where: {authorId} });
+    return Author.findOne({ where: {authorId}, relations: ['books'] });
   }
 
   @Mutation(() => Author)
@@ -21,20 +21,20 @@ export class AuthorResolver {
     return author;
   }
 
-  // @Mutation(() => Book)
-  // async updateBook(@Arg('id') bookId: number, @Arg('data') data: UpdateBookInput) {
-  //   const book = await Book.findOne({ where: { bookId } });
-  //   if (!book) throw new Error('Book not found!');
-  //   Object.assign(book, data);
-  //   await book.save();
-  //   return book;
-  // }
+  @Mutation(() => Author)
+  async updateAuthor(@Arg('id') authorId: number, @Arg('data') data: UpdateAuthorInput) {
+    const author = await Author.findOne({ where: { authorId } });
+    if (!author) throw new Error('Author not found!');
+    Object.assign(author, data);
+    await author.save();
+    return author;
+  }
 
-  // @Mutation(() => Boolean)
-  // async deleteBook(@Arg('id') bookId: number) {
-  //   const book = await Book.findOne({ where: { bookId } });
-  //   if (!book) throw new Error('Book not found!');
-  //   await book.remove();
-  //   return true;
-  // }
+  @Mutation(() => Boolean)
+  async deleteAuthor(@Arg('id') authorId: number) {
+    const author = await Author.findOne({ where: { authorId } });
+    if (!author) throw new Error('Author not found!');
+    await author.remove();
+    return true;
+  }
 }
