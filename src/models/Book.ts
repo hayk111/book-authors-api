@@ -22,7 +22,7 @@ export class Book extends BaseEntity {
   @Column()
   authorId: number;
 
-  @Field(() => Boolean)
-  @Column({ default: false })
-  isPublished: boolean;
+  @Field(() => Number)
+  @Column()
+  pageCount: number;
 }

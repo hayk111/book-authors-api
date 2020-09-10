@@ -9,5 +9,5 @@ export class UpdateBookInput {
   authorId: number;
 
   @Field({ nullable: true })
-  isPublished?: boolean;
+  pageCount: number;
 }
